@@ -1,0 +1,199 @@
+# OOP Practice Set — C++ Classes & Objects (+ Functions)
+
+Ordered by concept. Do them in order — each one adds a new syntax piece on top of the last.
+
+## Set 1: Basic Class + Constructors
+
+**1. Student Record**
+Class `Student` with `name`, `roll`, `marks`. Default constructor sets marks to 0. Parameterized constructor sets all three. Function `display()` prints them.
+- Syntax to use: default constructor, parameterized constructor
+
+**2. Rectangle**
+Class `Rectangle` with `length`, `width`. Constructor takes both. Functions `area()` and `perimeter()`.
+- Syntax to use: constructor, member functions
+
+**3. Book Copy**
+Class `Book` with `title`, `price`. Add a copy constructor that prints "Copying book..." when called. Create one object normally, then create a second object from the first using the copy constructor.
+- Syntax to use: copy constructor (`ClassName(const ClassName &obj)`)
+
+## Set 2: Access Specifiers + Outside Definitions
+
+**4. Bank Account**
+Class `Account` with `balance` as private. Public functions `deposit(amount)`, `withdraw(amount)`, `getBalance()`. Withdraw should refuse if amount > balance.
+- Syntax to use: `private`, `public`, validation logic inside member function
+
+**5. Employee**
+Class `Employee` with `name`, `salary` (private). Declare all functions inside the class, but define every function outside using `::`.
+- Syntax to use: function declared in class, defined outside with scope resolution operator
+
+## Set 3: Pointers + References to Objects
+
+**6. Product (heap allocation)**
+Class `Product` with `name`, `price`. In `main()`, create a `Product` object using `new`, access its members with `->`, then `delete` it.
+- Syntax to use: `new`, `->`, `delete`
+
+**7. Temperature (reference)**
+Class `Temperature` with `celsius`. Function `toFahrenheit()`. In `main()`, create one object, then create a reference to it and call the function through the reference.
+- Syntax to use: `ClassName& ref = obj;`
+
+## Set 4: `this` Pointer + Static Members
+
+**8. Box (name clash)**
+Class `Box` with `length`, `width`, `height`. Constructor parameters have the same names as the member variables. Use `this->` to resolve the clash.
+- Syntax to use: `this->memberVariable`
+
+**9. Counter**
+Class `Counter` that counts how many objects have been created, using a `static int count`. Increment it in the constructor. Add a `static` function `getCount()` that returns it. Create 3–4 objects and print the count.
+- Syntax to use: `static` member variable, `static` member function, define static var outside class
+
+## Set 5: Arrays of Objects + Mixed Recap
+
+**10. Circle (recap)**
+Class `Circle` with `radius` and a `static const double pi`. Functions `area()`, `circumference()`. Create an array of 3 `Circle` objects with different radii, loop through and print each one's area.
+- Syntax to use: `static const`, array of objects, loop
+
+**11. Library — full mix**
+Class `Book` with `title` (private), `available` (private, bool). Constructor, a public `borrowBook()` and `returnBook()` function (defined outside the class), and a `static int totalBooks` counter. In `main()`, create a pointer to a dynamically allocated array of 3 books using `new Book[3]`, borrow one via a pointer, then `delete[]` at the end.
+- Syntax to use: everything above combined, plus `new ClassName[size]` / `delete[]`
+
+## Set 6: More Access Specifiers + Pointers/References (extra practice)
+
+**12. Movie Ticket**
+Class `Ticket` with `movieName` (private, string), `seatsAvailable` (private, int). Constructor takes both. Declare `bookSeat()` and `getSeatsAvailable()` inside the class, define both outside with `::`. `bookSeat()` should reduce `seatsAvailable` by 1 — but refuse (print a message) if `seatsAvailable` is already 0.
+- Watch for: which function *changes* data (void) vs. which one *reports* data (returns a value)
+
+**13. Player Health**
+Class `Player` with `name` (private, string), `health` (private, int). Constructor takes both. Function `takeDamage(int amount)` reduces `health` — if it would go below 0, set it to 0 instead. Function `getHealth()` returns it. In `main()`, create the object using `new`, call both functions through the pointer, then `delete` it.
+- Watch for: `->` vs `.`, and not using the pointer after `delete`
+
+**14. Wallet**
+Class `Wallet` with `cash` (private, double). Constructor takes a starting amount. Public functions `addCash(amount)` and `spendCash(amount)` (refuse if amount > cash), both declared inside, defined outside with `::`. In `main()`, create one object, then create a reference to it, and do all your function calls through the reference, not the original object.
+- Watch for: functions using their own member variable, not needing you to pass in data they already have
+
+**15. Library Card**
+Class `LibraryCard` with `studentName` (private, string), `booksBorrowed` (private, int, max allowed is 3). All functions declared inside, defined outside with `::`. `borrowBook()` increases `booksBorrowed` by 1 but refuses if already at 3. `returnBook()` decreases it by 1 but refuses if already at 0. `getBooksBorrowed()` reports the current count. In `main()`, create the object with `new`, do a mix of borrow/return calls through the pointer, then `delete` it.
+- Watch for: three different functions, three different jobs — decide return-vs-void for each one before you start typing
+
+## Set 7: `this` + Static (extra practice)
+
+**16. Vehicle Registration**
+Class `Vehicle` with `brand`, `model` (both string). Constructor parameters are named identically to the members (intentional clash — resolve with `this->`). Add a `display()` function.
+- No static needed here — just practice spotting the clash again
+
+**17. Employee ID**
+Class `Employee` with `name` (string, private) and a `static int nextId`. Every time an object is created, assign it an ID equal to the current `nextId`, then increase `nextId` by 1 (so the first employee gets ID 1, the next gets ID 2, etc — need a private `int myId` too, non-static, to store each object's own assigned ID). Add `getMyId()` (non-static) and a `static getNextId()`.
+- This one makes you think about which members are static and which aren't, in the same class
+
+**18. Game Session**
+Class `Player` with `name`, `score` — constructor parameters share names with these members (use `this->`). Also add a `static int totalPlayers`, incremented in the constructor. Add a non-static `display()` (shows name/score) and a `static getTotalPlayers()`.
+- Decide for each function/variable: does this belong to one object, or all of them?
+
+## Set 8: Functions — Default Arguments, References, Inline
+
+**19. Discount Calculator**
+```cpp
+double finalPrice(double price, double discountPercent=10);
+```
+If called with just a price, apply 10% discount. If a second argument is given, use that instead. Test both ways in `main()`.
+- Syntax to use: default argument
+
+**20. Compound Interest with Frequency**
+```cpp
+double compoundInterest(double principal, double rate=5, int years=1);
+```
+Formula: `principal * pow((1 + rate/100), years)`. Call it three different ways: all three arguments, just principal+rate, just principal.
+- Syntax to use: multiple default arguments
+
+**21. Swap by Reference**
+```cpp
+void swapValues(int &a, int &b);
+```
+Swap two integers' values using references — no return needed. Print before and after in `main()` to prove it worked.
+- Syntax to use: call by reference
+
+**22. Return by Reference**
+```cpp
+int& getElement(int arr[], int index);
+```
+Return a reference to a specific array element, so that changing the returned reference actually changes the original array. Test: call it, modify the returned reference, then print the array to confirm the original changed.
+- Syntax to use: return by reference
+
+**23. Border Box**
+```cpp
+inline void printBorder(char symbol='#', int width=30);
+```
+Same idea as a textbook `printLine` example, but make it `inline` explicitly. Add a second inline function `printBoxTitle(string title)` that prints a border, then the title, then another border.
+- Syntax to use: inline function
+
+## Set 9: Function Overloading, Arrays, Pointers
+
+**24. Add — Function Overloading**
+```cpp
+int add(int a, int b);
+double add(double a, double b);
+int add(int a, int b, int c);
+```
+Same name, different behavior based on parameter types/count. Call all three in `main()` and print each result.
+- Syntax to use: function overloading
+
+**25. Print Info — Overloading with Different Types**
+```cpp
+void display(int x);
+void display(double x);
+void display(string x);
+```
+Each just prints its argument with a label saying what type it is. Call all three.
+- Syntax to use: function overloading
+
+**26. Array Sum**
+```cpp
+int arraySum(int arr[], int size);
+```
+Loop through the array, add up all elements, return the total. In `main()`, create an array of 5 numbers, call this function, print the result.
+- Syntax to use: array as function parameter
+
+**27. Find Max (array + pointer)**
+```cpp
+int findMax(int* arr, int size);
+```
+Same idea as problem 26, but the parameter is written as a pointer (`int*`) instead of `int[]` — arrays and pointers are deeply connected in C++; notice `int arr[]` and `int* arr` behave almost identically as function parameters. Find and return the largest value in the array.
+- Syntax to use: pointer as function parameter
+
+**28. Modify Array via Pointer**
+```cpp
+void doubleAllValues(int* arr, int size);
+```
+Using pointer arithmetic (`*(arr + i)` or `arr[i]`, try both), double every value in the array in place — no return needed, since arrays are automatically passed in a way that lets you modify the original directly. Print the array before and after calling this function to confirm the changes stuck.
+- Syntax to use: pointer arithmetic, modifying data through a pointer
+
+## Reference — syntax across all sets
+
+```cpp
+class ClassName {
+private:
+    // hidden
+public:
+    ClassName();                    // default constructor
+    ClassName(dataType param);      // parameterized constructor
+    ClassName(const ClassName &o);  // copy constructor
+    returnType func();              // declared, defined outside
+    static dataType staticVar;      // shared across all objects
+};
+
+returnType ClassName::func() { }             // outside definition
+dataType ClassName::staticVar = value;       // static var defined outside
+
+ClassName obj;                 // normal object
+ClassName* ptr = new ClassName();  ptr->func();  delete ptr;   // pointer
+ClassName& ref = obj;          ref.func();                     // reference
+this->memberVariable;          // inside a member function only
+
+// Functions (not tied to a class)
+double value(double p, double n, double r=1.2);   // default argument
+void swapValues(int &a, int &b);                    // call by reference
+int& getElement(int arr[], int index);              // return by reference
+inline void printLine(char c='*', int len=50);       // inline function
+int add(int a, int b); double add(double a, double b);  // overloading
+int arraySum(int arr[], int size);                    // array parameter
+int findMax(int* arr, int size);                       // pointer parameter
+```
